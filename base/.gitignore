@@ -1,0 +1,5 @@
+storage/
+tuf/
+ClimateProdTest-TCB-CUSTOM/
+credentials.zip
+*.lock.yml

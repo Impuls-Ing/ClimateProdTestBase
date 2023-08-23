@@ -1,0 +1,525 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Try Update Template",
+            "command": "echo",
+            "type": "process",
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "args": [
+                "✅ merge task finished"
+            ],
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "try-update-template"
+            ],
+            "icon": {
+                "id": "repo-sync",
+                "color": "terminal.ansiCyan"
+            }
+        },
+        {
+            "label": "try-update-template",
+            "detail": "hide",
+            "command": "pwsh",
+            "type": "process",
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "args": [
+                "${workspaceFolder}/.conf/projectUpdater.ps1",
+                "${workspaceFolder}",
+                "${workspaceFolderBasename}"
+            ],
+            "dependsOrder": "sequence",
+            "icon": {
+                "id": "repo-sync",
+                "color": "terminal.ansiCyan"
+            }
+        },
+        {
+            "label": "run-docker-registry",
+            "detail": "hide",
+            "command": "pwsh",
+            "type": "process",
+            "presentation": {
+                "echo": false,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "args": [
+                "-nop",
+                "-file",
+                "${workspaceFolder}/.conf/runContainerIfNotExists.ps1",
+                "-ContainerRuntime",
+                "docker",
+                "-RunArguments",
+                "'\"-d -p 5002:5000 --restart=always registry:2\"'",
+                "-ContainerName",
+                "registry"
+            ],
+            "dependsOrder": "sequence",
+            "icon": {
+                "id": "layers",
+                "color": "terminal.ansiCyan"
+            }
+        },
+        {
+            "label": "run-torizon-binfmt",
+            "detail": "hide",
+            "command": "pwsh",
+            "type": "process",
+            "presentation": {
+                "echo": false,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "args": [
+                "${workspaceFolder}/.conf/runContainerIfNotExists.ps1",
+                "-ContainerRuntime",
+                "docker",
+                "-RunArguments",
+                "'--rm --privileged torizon/binfmt'",
+                "-ContainerName",
+                "binfmt"
+            ],
+            "dependsOrder": "sequence",
+            "icon": {
+                "id": "layers",
+                "color": "terminal.ansiCyan"
+            }
+        },
+        {
+            "label": "run-share-wsl-ports",
+            "detail": "hide",
+            "command": "pwsh",
+            "type": "process",
+            "presentation": {
+                "echo": false,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "args": [
+                "${workspaceFolder}/.conf/shareWSLPorts.ps1"
+            ],
+            "dependsOrder": "sequence",
+            "icon": {
+                "id": "layers",
+                "color": "terminal.ansiCyan"
+            }
+        },
+        {
+            "label": "check-deps",
+            "detail": "hide",
+            "command": "pwsh",
+            "type": "process",
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "args": [
+                "${workspaceFolder}/.conf/checkDeps.ps1"
+            ],
+            "dependsOrder": "sequence",
+            "icon": {
+                "id": "layers",
+                "color": "terminal.ansiCyan"
+            }
+        },
+        {
+            "label": "create-storage-dir",
+            "detail": "hide",
+            "command": "DOCKER_HOST=",
+            "type": "shell",
+            "options": {
+                "env": {
+                    "VSCODE_CMD": "--help"
+                },
+                "cwd": "${workspaceFolder}"
+            },
+            "args": [
+                "mkdir",
+                "-p",
+                "storage"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+            ]
+        },
+        {
+            "label": "tcb-setup",
+            "detail": "hide",
+            "command": "DOCKER_HOST=",
+            "type": "shell",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "VSCODE_CMD": "--help"
+                }
+            },
+            "args": [
+                "source",
+                "./.conf/tcb-env-setup.sh",
+                "-s",
+                "${workspaceFolder}/storage",
+                "-t",
+                "${config:tcb.version}"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "create-storage-dir"
+            ]
+        },
+        {
+            "label": "tcb-build",
+            "detail": "",
+            "command": "DOCKER_HOST=",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "VSCODE_CMD": "--verbose build"
+                }
+            },
+            "args": [
+                "source",
+                "./.conf/tcb-env-setup.sh",
+                "-s",
+                "${workspaceFolder}/storage",
+                "-t",
+                "${config:tcb.version}"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+            ]
+        },
+        {
+            "label": "tcb-bundle",
+            "detail": "",
+            "command": "DOCKER_HOST=",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "VSCODE_CMD": "--verbose bundle ${command:tcb.listDockerComposeFiles}"
+                }
+            },
+            "args": [
+                "source",
+                "./.conf/tcb-env-setup.sh",
+                "-s",
+                "${workspaceFolder}/storage",
+                "-t",
+                "${config:tcb.version}"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+            ]
+        },
+        {
+            "label": "tcb-bundle-platform",
+            "detail": "",
+            "command": "DOCKER_HOST=",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "VSCODE_CMD": "--verbose bundle ${command:tcb.listDockerComposeFiles} --platform ${input:archList}"
+                }
+            },
+            "args": [
+                "source",
+                "./.conf/tcb-env-setup.sh",
+                "-s",
+                "${workspaceFolder}/storage",
+                "-t",
+                "${config:tcb.version}"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+            ]
+        },
+        {
+            "label": "tcb-bundle-platform-dind-param",
+            "detail": "",
+            "command": "DOCKER_HOST=",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "VSCODE_CMD": "--verbose bundle ${command:tcb.listDockerComposeFiles} --platform ${input:archList} --dind-param=\"${input:dindParam}\""
+                }
+            },
+            "args": [
+                "source",
+                "./.conf/tcb-env-setup.sh",
+                "-s",
+                "${workspaceFolder}/storage",
+                "-t",
+                "${config:tcb.version}"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+            ]
+        },
+        {
+            "label": "tcb-unpack",
+            "detail": "hide",
+            "command": "DOCKER_HOST=",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "VSCODE_CMD": "--verbose images --remove-storage unpack ${command:tcb.listFolders}"
+                }
+            },
+            "args": [
+                "source",
+                "./.conf/tcb-env-setup.sh",
+                "-s",
+                "${workspaceFolder}/storage",
+                "-t",
+                "${config:tcb.version}"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+            ]
+        },
+        {
+            "label": "tcb-deploy",
+            "detail": "",
+            "command": "DOCKER_HOST=",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "VSCODE_CMD": "--verbose deploy --remote-host ${config:torizon_ip} --remote-username ${config:torizon_login} --remote-password ${config:torizon_psswd} --reboot"
+                }
+            },
+            "args": [
+                "source",
+                "./.conf/tcb-env-setup.sh",
+                "-s",
+                "${workspaceFolder}/storage",
+                "-t",
+                "${config:tcb.version}"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "tcb-unpack"
+            ]
+        },
+        {
+            "label": "tcb-platform-push-ostree",
+            "detail": "",
+            "command": "DOCKER_HOST=",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "VSCODE_CMD": "--verbose platform push --credentials credentials.zip --package-name ClimateProdTest --package-version ${command:tcb.getNextPackageVersion} climateprodtest"
+                }
+            },
+            "args": [
+                "source",
+                "./.conf/tcb-env-setup.sh",
+                "-s",
+                "${workspaceFolder}/storage",
+                "-t",
+                "${config:tcb.version}"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+            ]
+        },
+        {
+            "label": "platform-update-fleet",
+            "detail": "",
+            "command": "DOCKER_HOST=",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PLATFORM_CLIENT_ID": "${command:tcb.clientId}",
+                    "PLATFORM_CLIENT_SECRET": "${command:tcb.clientSecret}",
+                }
+            },
+            "args": [
+                "pwsh",
+                "./.conf/torizonIO.ps1",
+                "update",
+                "fleet",
+                "latest",
+                "ClimateProdTest",
+                "'${command:tcb.fleetName}'"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+            ]
+        },
+        {
+            "label": "fill-pipeline-settings",
+            "detail": "",
+            "command": "echo",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "TCB_CLIENTID": "${command:tcb.clientId}",
+                    "TCB_CLIENTSECRET": "${command:tcb.clientSecret}",
+                    "TCB_PACKAGE": "ClimateProdTest",
+                    "TCB_OSTREE": "climateprodtest",
+                    "TCB_FLEET": "${command:tcb.fleetName}"
+                }
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "args": [
+                "-e",
+                "\"✅ fill-pipeline-settings done\n packageName: $TCB_PACKAGE\n ostreBranch: $TCB_OSTREE\n fleetName: $TCB_FLEET\n \"",
+                "&&",
+                "echo",
+                "-e",
+                "\"✅ github-actions-settings done\n",
+                "\n",
+                "'⚠️ ENV VARIABLES NEED TO BE SET IN CI/CD PLATFORM'\n",
+                "\tPLATFORM_CLIENT_ID\n",
+                "\tPLATFORM_CLIENT_SECRET\n",
+                "\tPLATFORM_CREDENTIALS\n\""
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiYellow"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+            ]
+        },
+    ],
+    "inputs": [
+        {
+            "id": "archList",
+            "type": "pickString",
+            "description": "Container architecture",
+            "options": [
+                "linux/arm/v7", 
+                "linux/arm64"
+            ]
+        },
+        {
+            "id": "dindParam",
+            "type": "promptString",
+            "description": "--dind-param arguments"
+        }
+    ]
+}
