@@ -1,0 +1,160 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright 2022 Toradex
+ */
+
+/dts-v1/;
+
+#include "imx8mm-verdin.dtsi"
+
+/ {
+	model = "Toradex Verdin iMX8M Mini on Mallow for Climate Production Test";
+	compatible = "toradex,verdin-imx8mm-nonwifi-dahlia",
+		     "toradex,verdin-imx8mm-nonwifi",
+		     "toradex,verdin-imx8mm",
+		     "fsl,imx8mm";
+
+	reg_2p5v_ref: regulator-2p5v {
+		compatible = "regulator-fixed";
+		regulator-max-microvolt = <2500000>;
+		regulator-min-microvolt = <2500000>;
+		regulator-name = "2.5V_REF";
+	};
+};
+
+&ecspi2 {
+	pinctrl-0 = <&pinctrl_ecspi2 &pinctrl_gpio1 &pinctrl_gpio2
+		     &pinctrl_gpio3 &pinctrl_gpio4 &pinctrl_climate_gpio5
+		     &pinctrl_climate_gpio6>;
+	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>, <&gpio3 4 GPIO_ACTIVE_LOW>,
+		   <&gpio5  5 GPIO_ACTIVE_LOW>, <&gpio5 26 GPIO_ACTIVE_LOW>,
+		   <&gpio5 27 GPIO_ACTIVE_LOW>;
+	/* DMAs prevent more than 3 CS */
+	dmas = "";
+	dma_names = "";
+
+	/*
+	 * This is not needed but always defined, even if left away, so define
+	 * it explicitly and leave it unused.
+	 */
+	spidev@0 {
+		compatible = "rohm,dh2228fv";
+		reg = <0>;
+		spi-max-frequency = <10000000>;
+	};
+
+	adc@1 {
+		compatible = "microchip,mcp3208";
+		reg = <1>;
+		vref-supply = <&reg_2p5v_ref>;
+		spi-max-frequency = <1000000>;
+	};
+
+	adc@2 {
+		compatible = "microchip,mcp3208";
+		reg = <2>;
+		vref-supply = <&reg_2p5v_ref>;
+		spi-max-frequency = <1000000>;
+	};
+
+	dac@0 {
+		compatible = "lltc,ltc1660";
+		reg = <3>;
+		spi-max-frequency = <5000000>;
+		vref-supply = <&reg_2p5v_ref>;
+	};
+
+	gpioexp2: gpio@4 {
+		compatible = "microchip,mcp23s17";
+		gpio-controller;
+		#gpio-cells = <2>;
+		/*
+		 * 0x02 -> IOEXP1
+		 * 0x04 -> IOEXP3
+		 * 0x10 -> IOEXP2
+		 */
+		microchip,spi-present-mask = <0x16>;
+		reg = <4>;
+		spi-max-frequency = <5000000>;
+		gpio-line-names = "Port_A0",
+				  "Port_A1",
+				  "Port_A2",
+				  "Port_A3",
+				  "Port_A4",
+				  "Port_A5",
+				  "Port_A6",
+				  "Port_A7",
+				  "Port_B0",
+				  "Port_B1",
+				  "Port_B2",
+				  "Port_B3",
+				  "Port_B4",
+				  "Port_B5",
+				  "Port_B6",
+				  "Port_B7";
+	};
+};
+
+&fec1 {
+	status = "okay";
+};
+
+&i2c4 {
+	status = "okay";
+
+	eeprom@55 {
+		compatible = "st,24c02";
+		pagesize = <16>;
+		reg = <0x55>;
+	};
+};
+
+&iomuxc {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_gpio7>, <&pinctrl_gpio8>,
+		    <&pinctrl_gpio_hog1>, <&pinctrl_gpio_hog2>, <&pinctrl_gpio_hog3>,
+		    <&pinctrl_pmic_tpm_ena>;
+
+	/* Climate GPIO 5 and 6 are not used at the moment */
+	pinctrl_climate_gpio5: climategpio5grp {
+		fsl,pins =
+			<MX8MM_IOMUXC_SAI2_TXFS_GPIO4_IO24		0x106>;	/* SODIMM 32 */
+	};
+
+	pinctrl_climate_gpio6: climategpio6grp {
+		fsl,pins =
+			<MX8MM_IOMUXC_SAI2_TXC_GPIO4_IO25		0x106>;	/* SODIMM 30 */
+	};
+};
+
+/* Verdin UART_3 */
+&uart1 {
+	status = "okay";
+};
+
+/* Verdin UART_1 */
+&uart2 {
+	status = "okay";
+};
+
+/* Verdin UART_2 */
+&uart3 {
+	status = "okay";
+};
+
+/* Verdin USB_1 */
+&usbotg1 {
+	disable-over-current;
+	status = "okay";
+};
+
+/* Verdin USB_2 */
+&usbotg2 {
+	disable-over-current;
+	status = "okay";
+};
+
+/* Verdin SD_1 */
+&usdhc2 {
+	status = "okay";
+};

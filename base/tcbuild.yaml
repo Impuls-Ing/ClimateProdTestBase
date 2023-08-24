@@ -15,6 +15,11 @@ input:
       build-number: 4
 
 customization:
+  device-tree:
+    include-dirs:
+      - linux-toradex/include/
+      - linux-toradex/arch/arm64/boot/dts/freescale/
+    custom: device-tree/imx8mm-verdin-nonwifi-climate-prodtest.dts
   filesystem:
       - "rootfs-overlay/tailscale64"
 
