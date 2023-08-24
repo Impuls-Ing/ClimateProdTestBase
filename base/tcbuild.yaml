@@ -17,8 +17,6 @@ input:
 customization:
   filesystem:
       - "rootfs-overlay/tailscale64"
-  # Customization section items.
-  splash-screen: splashScreen.png
 
 output:
   # Output section items (required).
