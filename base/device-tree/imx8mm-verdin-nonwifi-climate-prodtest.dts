@@ -32,6 +32,7 @@
 	/* DMAs prevent more than 3 CS */
 	dmas = "";
 	dma_names = "";
+	status = "okay";
 
 	/*
 	 * This is not needed but always defined, even if left away, so define
