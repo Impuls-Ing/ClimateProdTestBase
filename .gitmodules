@@ -1,4 +1,4 @@
-[submodule "base/linux-toradex"]
-	path = base/linux-toradex
+[submodule "linux-toradex"]
+	path = linux-toradex
 	url = git://git.toradex.com/linux-toradex.git
 	branch = toradex_5.15-2.1.x-imx
