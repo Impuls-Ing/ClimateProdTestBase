@@ -5,6 +5,7 @@
 
 /dts-v1/;
 
+#include <dt-bindings/leds/common.h>
 #include "imx8mm-verdin.dtsi"
 
 / {
@@ -13,6 +14,22 @@
 		     "toradex,verdin-imx8mm-nonwifi",
 		     "toradex,verdin-imx8mm",
 		     "fsl,imx8mm";
+
+	led-controller {
+		compatible = "pwm-leds";
+
+		led-1 {
+			color = <LED_COLOR_ID_GREEN>;
+			label = "LED1";
+			pwms = <&pwm2 0 6666667 0>;
+		};
+
+		led-2 {
+			color = <LED_COLOR_ID_GREEN>;
+			label = "LED2";
+			pwms = <&pwm3 0 6666667 0>;
+		};
+	};
 
 	reg_2p5v_ref: regulator-2p5v {
 		compatible = "regulator-fixed";
@@ -172,6 +189,16 @@
 		fsl,pins =
 			<MX8MM_IOMUXC_SAI2_TXC_GPIO4_IO25		0x106>;	/* SODIMM 30 */
 	};
+};
+
+/* Verdin PWM_1 */
+&pwm2 {
+	status = "okay";
+};
+
+/* Verdin PWM_2 */
+&pwm3 {
+	status = "okay";
 };
 
 /* Verdin UART_3 */
