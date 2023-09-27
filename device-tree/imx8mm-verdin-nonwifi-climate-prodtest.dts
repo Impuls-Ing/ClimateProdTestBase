@@ -65,6 +65,7 @@
 	adc@1 {
 		compatible = "microchip,mcp3208";
 		reg = <1>;
+		label = "ClimateProdTest_ADC1";
 		spi-max-frequency = <1000000>;
 		vref-supply = <&reg_2p5v_ref>;
 	};
@@ -72,6 +73,7 @@
 	adc@2 {
 		compatible = "microchip,mcp3208";
 		reg = <2>;
+		label = "ClimateProdTest_ADC2";
 		spi-max-frequency = <1000000>;
 		vref-supply = <&reg_2p5v_ref>;
 	};
@@ -79,6 +81,7 @@
 	dac@3 {
 		compatible = "lltc,ltc1660";
 		reg = <3>;
+		label = "ClimateProdTest_DAC1";
 		spi-max-frequency = <5000000>;
 		vref-supply = <&reg_2p5v_ref>;
 	};
