@@ -28,7 +28,8 @@
 		     &pinctrl_climate_gpio6>;
 	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>, <&gpio3 4 GPIO_ACTIVE_LOW>,
 		   <&gpio5  5 GPIO_ACTIVE_LOW>, <&gpio5 26 GPIO_ACTIVE_LOW>,
-		   <&gpio5 27 GPIO_ACTIVE_LOW>;
+		   <&gpio5 27 GPIO_ACTIVE_LOW>, <&gpio4 24 GPIO_ACTIVE_LOW>,
+		   <&gpio4 25 GPIO_ACTIVE_LOW>;
 	/* DMAs prevent more than 3 CS */
 	dmas = "";
 	dma_names = "";
@@ -47,52 +48,97 @@
 	adc@1 {
 		compatible = "microchip,mcp3208";
 		reg = <1>;
-		vref-supply = <&reg_2p5v_ref>;
 		spi-max-frequency = <1000000>;
+		vref-supply = <&reg_2p5v_ref>;
 	};
 
 	adc@2 {
 		compatible = "microchip,mcp3208";
 		reg = <2>;
-		vref-supply = <&reg_2p5v_ref>;
 		spi-max-frequency = <1000000>;
+		vref-supply = <&reg_2p5v_ref>;
 	};
 
-	dac@0 {
+	dac@3 {
 		compatible = "lltc,ltc1660";
 		reg = <3>;
 		spi-max-frequency = <5000000>;
 		vref-supply = <&reg_2p5v_ref>;
 	};
 
-	gpioexp2: gpio@4 {
+	gpioexp1: gpio@4 {
 		compatible = "microchip,mcp23s17";
 		gpio-controller;
 		#gpio-cells = <2>;
-		/*
-		 * 0x02 -> IOEXP1
-		 * 0x04 -> IOEXP3
-		 * 0x10 -> IOEXP2
-		 */
-		microchip,spi-present-mask = <0x16>;
+		microchip,spi-present-mask = <0x02>;
 		reg = <4>;
 		spi-max-frequency = <5000000>;
-		gpio-line-names = "Port_A0",
-				  "Port_A1",
-				  "Port_A2",
-				  "Port_A3",
-				  "Port_A4",
-				  "Port_A5",
-				  "Port_A6",
-				  "Port_A7",
-				  "Port_B0",
-				  "Port_B1",
-				  "Port_B2",
-				  "Port_B3",
-				  "Port_B4",
-				  "Port_B5",
-				  "Port_B6",
-				  "Port_B7";
+		gpio-line-names = "Reserved_X14_0",
+				  "Reserved_X14_1",
+				  "Reserved_X16_2",
+				  "Reserved_X16_3",
+				  "Reserved_X17",
+				  "Reserved_X18",
+				  "Reserved_X19",
+				  "Reserved_X20",
+				  "Fan2_Tacho_Out",
+				  "Fan4_Tacho_Out",
+				  "Fan3_Tacho_Out",
+				  "Fan1_Tacho_Out",
+				  "Reserved_X23",
+				  "Reserved_X24",
+				  "Reserved_X25",
+				  "230V_ON";
+	};
+
+	gpioexp2: gpio@5 {
+		compatible = "microchip,mcp23s17";
+		gpio-controller;
+		#gpio-cells = <2>;
+		microchip,spi-present-mask = <0x10>;
+		reg = <5>;
+		spi-max-frequency = <5000000>;
+		gpio-line-names = "Error_In",
+				  "HeatValve_In",
+				  "Reserved_X9_14",
+				  "CoolValve_In",
+				  "Reserved_X9_15",
+				  "Reserved_X21",
+				  "SKS_State",
+				  "Start_Button",
+				  "Detect1_Out",
+				  "Detect1_In",
+				  "Detect2_Out",
+				  "Detect2_In",
+				  "DUT_24V_X10_1",
+				  "DUT_24V_X1_4",
+				  "DUT_24V_X8_5",
+				  "DUT_24V_X10_5";
+	};
+
+	gpioexp3: gpio@6 {
+		compatible = "microchip,mcp23s17";
+		gpio-controller;
+		#gpio-cells = <2>;
+		microchip,spi-present-mask = <0x04>;
+		reg = <6>;
+		spi-max-frequency = <5000000>;
+		gpio-line-names = "DUT_GND_X8_4",
+				  "DUT_GND_X7_9",
+				  "DUT_GND_X10_8",
+				  "DUT_GND_X7_8",
+				  "DUT_GND_X10_4",
+				  "DUT_GND_X7_4",
+				  "DUT_GND_X12_12",
+				  "DUT_GND_X7_3",
+				  "DUT_GND_X12_4",
+				  "DUT_GND_X8_8",
+				  "DUT_GND_X12_6",
+				  "DUT_GND_X1_6",
+				  "DUT_GND_X12_10",
+				  "DUT_24V_X12_7",
+				  "DUT_24V_X12_1",
+				  "DUT_24V_X8_1";
 	};
 };
 
