@@ -163,6 +163,10 @@
 	status = "okay";
 };
 
+&hwmon_temp {
+	status = "okay";
+};
+
 &i2c4 {
 	status = "okay";
 
