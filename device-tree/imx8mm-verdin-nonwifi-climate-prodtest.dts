@@ -108,7 +108,7 @@
 				  "Reserved_X23",
 				  "Reserved_X24",
 				  "Reserved_X25",
-				  "230V_ON";
+				  "_230V_ON";
 	};
 
 	gpioexp2: gpio@5 {
