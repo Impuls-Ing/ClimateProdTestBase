@@ -23,6 +23,7 @@ customization:
     custom: device-tree/imx8mm-verdin-nonwifi-climate-prodtest.dts
   filesystem:
       - "rootfs-overlay/tailscale64"
+      - "rootfs-overlay/udev"
 
 output:
   # Output section items (required).

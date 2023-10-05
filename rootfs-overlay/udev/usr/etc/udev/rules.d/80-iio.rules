@@ -1,0 +1,1 @@
+ACTION=="add", SUBSYSTEM=="iio", ATTR{label}=="ClimateProdTest_DAC1", RUN+="/bin/sh -c 'chgrp -R torizon /sys%p; chmod -R 774 /sys%p'"
