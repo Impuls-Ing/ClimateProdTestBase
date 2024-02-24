@@ -1,0 +1,1 @@
+ACTION=="add|change", SUBSYSTEM=="usbmisc", ATTRS{idVendor}=="0a5f", SYMLINK +="label_printer", TAG+="systemd", ENV{SYSTEMD_ALIAS}+="/sys/subsystem/usbmisc/label_printer"
