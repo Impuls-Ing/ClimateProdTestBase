@@ -11,9 +11,9 @@ result=$(docker exec $container_name bash -c "[ -e $device_path ] && echo 'prese
 
 # Überprüfen des Rückgabewerts
 if [ "$result" == "present" ]; then
-    echo "$device_path ist vorhanden. Nichts weiter tun."
+    echo "${device_path} ist vorhanden. Nichts weiter tun."
 else
-    echo "$device_path ist nicht vorhanden. Zu Container hinzufügen."
+    echo "${device_path} ist nicht vorhanden. Zu Container hinzufügen."
     docker exec $container_name mkdir /dev/usb
     docker exec $container_name mknod /dev/usb/lp0 c 180 0
     docker exec $container_name chown root:lp /dev/usb/lp0
