@@ -3,3 +3,4 @@ tuf/
 ClimateProdTest-TCB-CUSTOM/
 credentials.zip
 *.lock.yml
+.conf/.depok
