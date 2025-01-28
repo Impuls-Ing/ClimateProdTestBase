@@ -29,7 +29,7 @@ output:
   # Output section items (required).
   # ⚠️ change it for your needs
   easy-installer:
-    local: ClimateProdTest-TCB-CUSTOM
+    local: ClimateProdTestBase-TCB-CUSTOM
   ostree:
-    branch: climateprodtest
-    commit-subject: ClimateProdTest
+    branch: climateprodtestbase
+    commit-subject: ClimateProdTestBase
