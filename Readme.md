@@ -10,7 +10,7 @@ Das ist das Torizon Basis-Betriebsystem des Climate Production Testers. Als over
 ### Build
 
 1. `git submodule update --init --recursive`
-2. Lösche Order "ClimateProdTest-TCB-CUSTOM" falls schon existiert
+2. Lösche Order "ClimateProdTestBase-TCB-CUSTOM" falls schon existiert
 3. Evtl. IP Einstellungen in settings.json anpassen
 4. Kontrolle ob Target erreichbar
 5. [in VSCode] F1 -> Run Task -> tcb-build
@@ -19,6 +19,11 @@ Das ist das Torizon Basis-Betriebsystem des Climate Production Testers. Als over
 ### Deploy
 
 - F1 -> Run Task -> tcb-deploy
-  - "ClimateProdTest-TCB-CUSTOM" auswählen
+  - "ClimateProdTestBase-TCB-CUSTOM" auswählen
 
+## Release
 
+- Release build starten mit tag `v[0-9]`
+  - Torizoncore builder nummeriert 1,2,3..n
+  - Darauf achten, dass die Tagnummer mit der Torizoncore buildnummer
+    der Torizon Platform übereinstimmt.
