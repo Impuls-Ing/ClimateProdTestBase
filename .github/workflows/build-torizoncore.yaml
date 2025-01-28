@@ -39,3 +39,27 @@ jobs:
         run: |
           ./.vscode/tasks.ps1 run tcb-setup
           ./.vscode/tasks.ps1 run tcb-platform-push-ostree
+
+      - name: Create release information
+        shell: bash
+        id: release_info
+        run: |
+            git fetch --all --tags -f
+            tag_message=$(git tag -l --format='%(contents)' ${{ github.ref_name }} || echo "No description provided.")
+            echo "## ClimateProdTestBase - ${{ github.ref_name }}" >> releaseinfo.md
+            echo "" >> releaseinfo.md
+            echo "${tag_message}" >> releaseinfo.md
+
+      - name: Compress Artifacts
+        shell: bash
+        run: |
+          tar -czf "ClimateProdTestBase-${{ github.ref_name }}.tar.gz" ClimateProdTestBase-TCB-CUSTOM/
+
+      - name: Create Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          body_path: releaseinfo.md # use the full content of the tag body
+          files: ClimateProdTestBase-${{ github.ref_name }}.tar.gz
+          draft: false
+          prerelease: false
