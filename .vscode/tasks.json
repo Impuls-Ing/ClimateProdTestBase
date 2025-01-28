@@ -404,7 +404,7 @@
             "options": {
                 "cwd": "${workspaceFolder}",
                 "env": {
-                    "VSCODE_CMD": "--verbose platform push --credentials credentials.zip --package-name ClimateProdTest --package-version ${command:tcb.getNextPackageVersion} climateprodtest"
+                    "VSCODE_CMD": "--verbose platform push --credentials credentials.zip --package-name ClimateProdTestBase --package-version ${command:tcb.getNextPackageVersion} climateprodtestbase"
                 }
             },
             "args": [

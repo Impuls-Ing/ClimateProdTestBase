@@ -15,10 +15,12 @@
   "torizon_run_as": "torizon",
   "torizon_app_root": "/home/torizon",
   "tcb.version": "3.7.0",
-  "tcb.packageName": "ClimateProdTest",
+  "tcb.packageName": "ClimateProdTestBase",
   "tcb.fleetName": "",
   "docker.environment": {
     "DOCKER_HOST": "tcp://climate-tester-1:2375"
   },
-  "docker_tag": "climateprodtest"
+  "docker_tag": "climateprodtestbase",
+  "tcb.clientId": "api-v2_900f2912_b973e466-27c9-4dea-a131-54f54b4ceac6",
+  "tcb.clientSecret": "secret"
 }
