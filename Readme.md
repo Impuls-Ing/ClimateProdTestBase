@@ -27,3 +27,12 @@ Das ist das Torizon Basis-Betriebsystem des Climate Production Testers. Als over
   - Torizoncore builder nummeriert 1,2,3..n
   - Darauf achten, dass die Tagnummer mit der Torizoncore buildnummer
     der Torizon Platform übereinstimmt.
+
+## Production Installation
+
+- Das Release archiv herunterladen und mit Toradex Easy Installer installieren
+- Auf Gerät verbinden, passwort erstellen
+- Gerät auf Platform hinzufügen (Provision)
+- GitHub Registry token abspeichern (für zugriff auf private Registry
+  - `sudo docker --config /etc/docker login ghcr.io -u impuls-ing`
+  - Token befindet sich im Passwort-Manager
