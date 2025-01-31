@@ -7,13 +7,12 @@ input:
   # ⚠️ change it for your needs
   easy-installer:
     toradex-feed:
-      version: "6.4.0"
-      release: monthly
+      version: "6.8.1"
+      release: quarterly
       machine: verdin-imx8mm
       distro: torizon
       variant: torizon-core-docker
-      build-number: 13
-      build-date: "202309"
+      build-number: 25
 
 customization:
   device-tree:
