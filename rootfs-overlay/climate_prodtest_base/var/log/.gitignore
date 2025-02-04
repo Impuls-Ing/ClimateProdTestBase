@@ -1,0 +1,6 @@
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore
+# Needed for commiting this directory, that needs to stay otherwise Torizon
+# will create a symlink /var/log -> /var/volatile
