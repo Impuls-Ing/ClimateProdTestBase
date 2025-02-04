@@ -29,6 +29,8 @@ output:
   # ⚠️ change it for your needs
   easy-installer:
     local: ClimateProdTestBase-TCB-CUSTOM
+    name: "Climate Production Tester Base Image"
+    description: "Base Image for the Production Tester of Climate (Impuls.Ing GmbH)"
   ostree:
     branch: climateprodtestbase
     commit-subject: ClimateProdTestBase
